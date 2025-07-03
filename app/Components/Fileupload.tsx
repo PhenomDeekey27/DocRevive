@@ -75,7 +75,7 @@ const Fileupload = () => {
 
     if (data.text) {
       setExtractedText(data.text);
-      // formattedData(data.text)
+      formattedData(data.text)
     } else {
       setExtractedText('Failed to extract text from PDF.');
     }
@@ -217,14 +217,18 @@ ${textcontent}
 
             />
           ) : file.type === 'application/pdf' ? (
-            <div className="w-[250px] h-[250px] flex items-center justify-center border rounded-md overflow-hidden">
+            <div
+              className="w-[250px] h-[250px] flex items-center justify-center border rounded-md overflow-hidden"
+            >
               <Document
                 file={previewUrl}
                 onLoadError={(error) => console.error("PDF Load Error:", error)}
+                loading="Loading PDF..."
               >
-                <Page pageNumber={1} width={250} />
+                <Page pageNumber={1} width={230} /> {/* Slightly smaller than container */}
               </Document>
             </div>
+
 
           ) : (
             <p className="text-red-500">Unsupported file type</p>
@@ -233,40 +237,7 @@ ${textcontent}
       )}
 
 
-      {/* <div className="w-[80vw] mt-12">
-        <div className="-m-1.5 overflow-x-auto">
-          <div className="p-1.5 min-w-full inline-block align-middle">
-            <div className="border border-gray-200 overflow-hidden dark:border-neutral-700">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                <thead>
-                  <tr>
-                    {
-                      formattedContext?.headers?.map((head) => (<th scope="col" className="px-6 py-3 text-start text-xs font-bold uppercase text-primary">{head}</th>)
-                      )
-                    }
 
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                  {formattedContext?.data?.map((row: any, rowIndex: number) => (
-                    <tr key={rowIndex}>
-                      {formattedContext.headers.map((header: string, colIndex: number) => (
-                        <td
-                          key={colIndex}
-                          className="px-6 py-4 whitespace-nowrap text-sm font-medium "
-                        >
-                          {row[header] || "-"}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-      </div> */}
       <div className="w-[80vw] mt-12">
         {formattedLoading ? (
           <div className="text-blue-500 text-center py-10">Analyzing report... Please wait.</div>
