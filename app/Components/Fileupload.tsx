@@ -5,6 +5,14 @@ import React, { useState } from 'react'
 import Tesseract from 'tesseract.js';
 import { GoogleGenAI } from '@google/genai';
 
+type FormattedContext = {
+  headers: string[];
+  data: {
+    [key: string]: string | number | null;
+  }[];
+  insights: string;
+};
+
 
 
 
@@ -14,7 +22,7 @@ const Fileupload = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState<string>('');
   const [loadingText, setLoadingText] = useState(false);
-  const [formattedContext, setformattedContext] = useState({})
+  const [formattedContext, setformattedContext] = useState<FormattedContext | null >(null)
   const [formattedLoading, setformattedLoading] = useState<boolean>(false)
   const [ParsedOnes, setParsedOnes] = useState()
 
@@ -206,13 +214,7 @@ ${textcontent}
             <div className='flex flex-col items-center text-center'>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-file-text-icon lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
               <p>Pdf Preview is not supported</p>
-              {/* <div className="w-[250px] h-[250px] overflow-hidden border rounded">
-                                <iframe
-                                    src={previewUrl}
-                                    className="scale-[0.3] origin-top-left w-[800px] h-[1000px]"
-                                    title="PDF Preview"
-                                />
-                            </div> */}
+            
             </div>
 
           ) : (
