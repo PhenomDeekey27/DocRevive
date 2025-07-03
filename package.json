@@ -1,0 +1,33 @@
+{
+  "name": "converter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.23.2",
+    "@google-cloud/vision": "^5.2.0",
+    "@google/genai": "^1.8.0",
+    "convertapi": "^1.15.0",
+    "formidable": "^3.5.4",
+    "next": "15.3.4",
+    "pdf-parse": "^1.1.1",
+    "pdf2pic": "^3.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tesseract.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
