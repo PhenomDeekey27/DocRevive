@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import Tesseract from 'tesseract.js';
 import { GoogleGenAI } from '@google/genai';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 type FormattedContext = {
   headers: string[];
@@ -12,6 +13,11 @@ type FormattedContext = {
   }[];
   insights: string;
 };
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 
 
@@ -22,7 +28,7 @@ const Fileupload = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState<string>('');
   const [loadingText, setLoadingText] = useState(false);
-  const [formattedContext, setformattedContext] = useState<FormattedContext | null >(null)
+  const [formattedContext, setformattedContext] = useState<FormattedContext | null>(null)
   const [formattedLoading, setformattedLoading] = useState<boolean>(false)
   const [ParsedOnes, setParsedOnes] = useState()
 
@@ -34,13 +40,13 @@ const Fileupload = () => {
     if (!selected) return;
 
     //resettting states for next pdf/image
-     setFile(null);
-  setPreviewUrl(null);
-  setExtractedText('');
-  setformattedContext(null);
-  setParsedOnes(undefined); // if you plan to use it
-  setformattedLoading(false);
-  setLoadingText(false);
+    setFile(null);
+    setPreviewUrl(null);
+    setExtractedText('');
+    setformattedContext(null);
+    setParsedOnes(undefined); // if you plan to use it
+    setformattedLoading(false);
+    setLoadingText(false);
 
     setFile(selected);
     const fileURL = URL.createObjectURL(selected);
@@ -69,7 +75,7 @@ const Fileupload = () => {
 
     if (data.text) {
       setExtractedText(data.text);
-      formattedData(data.text)
+      // formattedData(data.text)
     } else {
       setExtractedText('Failed to extract text from PDF.');
     }
@@ -96,7 +102,7 @@ const Fileupload = () => {
     }
   };
 
-  function parseResponse(raw: string | undefined ) {
+  function parseResponse(raw: string | undefined) {
     try {
       // Remove markdown code block syntax like ```json and ```
       const cleaned = raw?.replace(/```json|```/g, '').trim();
@@ -211,10 +217,13 @@ ${textcontent}
 
             />
           ) : file.type === 'application/pdf' ? (
-            <div className='flex flex-col items-center text-center'>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-file-text-icon lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg>
-              <p>Pdf Preview is not supported</p>
-            
+            <div className="w-[250px] h-[250px] flex items-center justify-center border rounded-md overflow-hidden">
+              <Document
+                file={previewUrl}
+                onLoadError={(error) => console.error("PDF Load Error:", error)}
+              >
+                <Page pageNumber={1} width={250} />
+              </Document>
             </div>
 
           ) : (
@@ -259,9 +268,9 @@ ${textcontent}
 
       </div> */}
       <div className="w-[80vw] mt-12">
-      {formattedLoading ? (
-  <div className="text-blue-500 text-center py-10">Analyzing report... Please wait.</div>
-) : formattedContext && formattedContext.headers.length > 0 && formattedContext.data.length > 0 ? (
+        {formattedLoading ? (
+          <div className="text-blue-500 text-center py-10">Analyzing report... Please wait.</div>
+        ) : formattedContext && formattedContext.headers.length > 0 && formattedContext.data.length > 0 ? (
           <div className="-m-1.5 overflow-x-auto">
             <div className="p-1.5 min-w-full inline-block align-middle">
               <div className="border border-gray-200 overflow-hidden dark:border-neutral-700">
@@ -309,6 +318,6 @@ ${textcontent}
 
     </div>
   )
-} 
+}
 
 export default Fileupload
