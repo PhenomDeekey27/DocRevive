@@ -37,7 +37,7 @@ const Fileupload = () => {
      setFile(null);
   setPreviewUrl(null);
   setExtractedText('');
-  setformattedContext({});
+  setformattedContext(null);
   setParsedOnes(undefined); // if you plan to use it
   setformattedLoading(false);
   setLoadingText(false);
@@ -259,9 +259,9 @@ ${textcontent}
 
       </div> */}
       <div className="w-[80vw] mt-12">
-        {formattedLoading ? (
-          <div className="text-blue-500 text-center py-10">Analyzing report... Please wait.</div>
-        ) : formattedContext?.headers && formattedContext?.data ? (
+      {formattedLoading ? (
+  <div className="text-blue-500 text-center py-10">Analyzing report... Please wait.</div>
+) : formattedContext && formattedContext.headers.length > 0 && formattedContext.data.length > 0 ? (
           <div className="-m-1.5 overflow-x-auto">
             <div className="p-1.5 min-w-full inline-block align-middle">
               <div className="border border-gray-200 overflow-hidden dark:border-neutral-700">
