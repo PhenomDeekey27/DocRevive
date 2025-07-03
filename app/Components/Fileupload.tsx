@@ -7,6 +7,7 @@ import { GoogleGenAI } from '@google/genai';
 
 
 
+
 const Fileupload = () => {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null);
@@ -87,13 +88,13 @@ const Fileupload = () => {
     }
   };
 
-  function parseResponse(raw: string) {
+  function parseResponse(raw: string | undefined ) {
     try {
       // Remove markdown code block syntax like ```json and ```
-      const cleaned = raw.replace(/```json|```/g, '').trim();
+      const cleaned = raw?.replace(/```json|```/g, '').trim();
 
       // Try parsing the cleaned string
-      const parsed = JSON.parse(cleaned);
+      const parsed = cleaned && JSON.parse(cleaned);
 
       // Ensure required structure exists
       if (!parsed.headers || !parsed.data || !parsed.insights) {
@@ -306,6 +307,6 @@ ${textcontent}
 
     </div>
   )
-}
+} 
 
 export default Fileupload
